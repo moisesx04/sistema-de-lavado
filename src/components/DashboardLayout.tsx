@@ -22,9 +22,9 @@ export default function DashboardLayout() {
   return (
     <div className="app-container">
       <aside className="sidebar">
-        <div className="sidebar-logo text-center">
-          <h1 style={{ textAlign: 'center', fontSize: '1.25rem' }}>SISTEMA DE <span className="gradient-text">TICKETS</span></h1>
-          <p style={{ textAlign: 'center', fontSize: '0.75rem', letterSpacing: '2px' }}>CAR WASH PRO</p>
+        <div className="sidebar-logo">
+          <h1>SISTEMA DE <span className="gradient-text">TICKETS</span></h1>
+          <p>GESTIÓN DE LAVADO</p>
         </div>
         
         <nav className="nav-links">

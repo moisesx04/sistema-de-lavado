@@ -59,7 +59,7 @@ export default function Reports() {
   const printWasherReport = (washerData: any) => {
     const doc = new jsPDF() as any;
     doc.setFontSize(18);
-    doc.text('WASHFLOW PRO - COMPROBANTE DE PAGO', 14, 20);
+    doc.text('COMPROBANTE DE PAGO', 14, 20);
     doc.setFontSize(12);
     doc.text(`Lavador: ${washerData.name.toUpperCase()}`, 14, 30);
     doc.text(`Periodo: ${timeFilter.toUpperCase()} (${format(range.start, 'dd/MM')} al ${format(range.end, 'dd/MM')})`, 14, 37);
@@ -74,7 +74,7 @@ export default function Reports() {
       body: tableBody,
       startY: 45,
       theme: 'striped',
-      headStyles: { fillColor: [59, 130, 246] }
+      headStyles: { fillColor: [37, 99, 235] }
     });
 
     const finalY = (doc as any).lastAutoTable.finalY + 10;
@@ -87,14 +87,14 @@ export default function Reports() {
   return (
     <div className="animate-fade-in">
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem', gap: '0.5rem' }}>
-        {(['day', 'week', 'month'] as const).map(f => (
+        {(['day', 'week'] as const).map(f => (
           <button 
             key={f}
             onClick={() => setTimeFilter(f)}
             className={`btn ${timeFilter === f ? 'btn-primary' : ''}`}
             style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', background: timeFilter === f ? '' : 'var(--surface)' }}
           >
-            {f === 'day' ? 'Hoy' : f === 'week' ? 'Semana' : 'Mes'}
+            {f === 'day' ? 'Hoy' : 'Semana'}
           </button>
         ))}
       </div>

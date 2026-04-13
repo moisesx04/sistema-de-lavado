@@ -68,7 +68,7 @@ export default function Tickets() {
   const sendWhatsApp = (type: 'client' | 'washer') => {
     const isClient = type === 'client';
     const text = isClient 
-      ? `*🧾 WASHFLOW PRO - RECIBO CLIENTE*
+      ? `*🧾 COMPROBANTE DE PAGO*
 -----------------------------------
 🏷️ *Ticket:* #${lastTicket.id.slice(0, 8).toUpperCase()}
 📅 *Fecha:* ${format(lastTicket.timestamp, 'dd/MM/yyyy HH:mm')}
@@ -79,7 +79,7 @@ export default function Tickets() {
 💰 *TOTAL A PAGAR:* $${lastTicket.clientPrice.toLocaleString()}.00
 -----------------------------------
 *¡Gracias por su preferencia!*`
-      : `*🔌 WASHFLOW PRO - VALE LAVADOR*
+      : `*🔌 VALE DE PAGO LAVADOR*
 -----------------------------------
 🆔 *ID Lavador:* #${lastTicket.washerId.slice(0, 5).toUpperCase()}
 👷 *Lavador:* ${lastTicket.washerName.toUpperCase()}
@@ -197,7 +197,7 @@ _Conserva este ticket para tu liquidación diaria_`;
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div style={{ textAlign: 'center', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary)', padding: '0.5rem', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: '800' }}>COPIA PARA CLIENTE</div>
                 <div ref={clientTicketRef} style={{ background: 'white', color: 'black', padding: '2rem', borderRadius: '0.5rem', fontFamily: 'monospace', boxShadow: '0 10px 25px rgba(0,0,0,0.3)' }}>
-                  <h3>WASHFLOW PRO</h3>
+                  <h3>COMPROBANTE CLIENTE</h3>
                   <p>Santo Domingo, RD</p>
                   <div className="divider"></div>
                   <div className="row"><span>Ticket:</span> <b>#{lastTicket.id.slice(0, 8).toUpperCase()}</b></div>
@@ -218,7 +218,7 @@ _Conserva este ticket para tu liquidación diaria_`;
                 <div style={{ textAlign: 'center', background: 'rgba(244, 63, 94, 0.1)', color: 'var(--accent)', padding: '0.5rem', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: '800' }}>COPIA PARA LAVADOR</div>
                 <div ref={washerTicketRef} style={{ background: 'white', color: 'black', padding: '2rem', borderRadius: '0.5rem', fontFamily: 'monospace', boxShadow: '0 10px 25px rgba(0,0,0,0.3)' }}>
                   <h3>VALE DE PAGO</h3>
-                  <p>WASHFLOW PRO INTERNAL</p>
+                  <p>SISTEMA DE TICKETS INTERNAL</p>
                   <div className="divider"></div>
                   <div className="row"><span>ID Lavador:</span> <b>#{lastTicket.washerId.slice(0, 5).toUpperCase()}</b></div>
                   <div className="row"><span>Lavador:</span> <b>{lastTicket.washerName.toUpperCase()}</b></div>

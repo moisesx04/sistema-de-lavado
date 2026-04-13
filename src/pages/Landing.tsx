@@ -21,7 +21,7 @@ export default function Landing() {
               Next-Gen Management for Car Wash
             </span>
             <h1 style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', fontWeight: '900', letterSpacing: '-0.05em', lineHeight: 1, margin: '1.5rem 0' }}>
-              WashFlow <span className="gradient-text">Pro</span>
+              Lavado <span className="gradient-text">Inteligente</span>
             </h1>
             <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
               Optimiza tu nómina, gestiona servicios dinámicos y visualiza tus ganancias en tiempo real con la plataforma de car wash más potente del mercado.
@@ -51,7 +51,7 @@ export default function Landing() {
               { icon: <BarChart3 size={32} />, title: "Análisis en Vivo", desc: "Gráficos interactivos de ingresos diarios, semanales y mensuales para decisiones basadas en datos." },
               { icon: <Shield size={32} />, title: "Control de Nómina", desc: "Cálculo preciso de comisiones por cada lavador basado en servicios realizados." },
               { icon: <Zap size={32} />, title: "Servicios Dinámicos", desc: "Configura infinitos tipos de lavados, detallado y tratamientos de pintura con un clic." },
-              { icon: <Sparkles size={32} />, title: "Tickets Pro", desc: "Simulación de impresión térmica y compartir vía WhatsApp para un servicio de lujo." },
+              { icon: <Sparkles size={32} />, title: "Tickets Digitales", desc: "Simulación de impresión térmica y compartir vía WhatsApp para un servicio moderno." },
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -74,7 +74,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer style={{ padding: '4rem 2rem', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
-        <p style={{ opacity: 0.5, fontSize: '0.875rem' }}>© 2026 WashFlow Pro. Diseñado para la Excelencia Operativa.</p>
+        <p style={{ opacity: 0.5, fontSize: '0.875rem' }}>© 2026 Car Wash Sistema. Diseñado para la Excelencia Operativa.</p>
       </footer>
     </div>
   );

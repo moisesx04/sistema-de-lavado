@@ -55,14 +55,14 @@ export default function Stats() {
   return (
     <div className="animate-fade-in">
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem', gap: '0.5rem' }}>
-        {(['day', 'week', 'month'] as const).map(range => (
+        {(['day', 'week'] as const).map(range => (
           <button 
             key={range}
             onClick={() => setTimeRange(range)}
             className={`btn ${timeRange === range ? 'btn-primary' : ''}`}
             style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', background: timeRange === range ? '' : 'var(--surface)' }}
           >
-            {range === 'day' ? 'Hoy' : range === 'week' ? 'Semana' : 'Mes'}
+            {range === 'day' ? 'Hoy' : 'Semana'}
           </button>
         ))}
       </div>
