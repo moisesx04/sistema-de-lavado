@@ -1,19 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
+  --primary: #8b5cf6; /* Electric Purple */
+  --primary-hover: #7c3aed;
   --secondary: #8b5cf6;
-  --accent: #f43f5e;
-  --background: #020617;
-  --surface: #0f172a;
-  --surface-hover: #1e293b;
+  --accent: #ec4899; /* Vibrant Pink */
+  --background: #0a0a0f;
+  --surface: #12121e;
+  --surface-hover: #1b1b2f;
   --text: #f8fafc;
   --text-muted: #94a3b8;
-  --border: #1e293b;
+  --border: rgba(255, 255, 255, 0.08);
   --card-bg: rgba(15, 23, 42, 0.7);
   --success: #10b981;
   --error: #ef4444;
+  --glass: rgba(18, 18, 30, 0.7);
   
   font-family: 'Outfit', sans-serif;
   line-height: 1.5;
@@ -89,6 +90,13 @@ body {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .sidebar-logo p {
