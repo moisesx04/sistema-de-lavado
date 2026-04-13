@@ -3,7 +3,6 @@ import { useState, useMemo } from 'react';
 import { useApp } from '../hooks/useApp';
 import { Calculator, Download, FileText, Printer, Clock } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, startOfWeek, startOfDay } from 'date-fns';
-import { es } from 'date-fns/locale';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
