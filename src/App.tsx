@@ -13,7 +13,7 @@ function App() {
     <AppProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           
           <Route path="/dashboard/*" element={<DashboardLayout />}>
             <Route index element={<Stats />} />
