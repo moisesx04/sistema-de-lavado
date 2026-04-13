@@ -1,17 +1,18 @@
-# 🏎️ WashFlow Pro: Executive Car Wash Management
+# 🏎️ Sistema de Lavado Inteligente: Gestión Ejecutiva
 
-**WashFlow Pro** is a high-performance, minimalist management system designed for modern car wash businesses. Built with a focus on speed, data visualization, and operational efficiency.
+**Sistema de Lavado Inteligente** es un sistema de gestión de alto rendimiento y diseño minimalista diseñado para negocios modernos de lavado de vehículos. Enfocado en la velocidad, visualización de datos y eficiencia operativa.
 
-![Project Preview](https://via.placeholder.com/1200x600?text=WashFlow+Pro+Dashboard+Preview)
+![Project Preview](https://via.placeholder.com/1200x600?text=Sistema+de+Lavado+Dashboard+Preview)
 
-## 🌟 Key Features
+## 🌟 Funciones Clave
 
-- **📊 Executive Analytics**: Interactive charts showing revenue trends, profit margins, and service distribution (Day/Week/Month views).
-- **👷 Advanced Payroll**: Automated monthly payroll calculations based on specific commissions per service.
-- **🧼 Dynamic Services**: Full CRUD for wash services, detailing, and special treatments with asymmetric pricing (Client Price vs. Washer Pay).
-- **🧾 WhatsApp Receipts**: Professional "facturita-style" ticket sharing with one-click integration.
-- **📄 Export System**: Generation of professional PDF reports and Excel data sheets.
-- **⚡ Performance First**: Zero-latency UI built with React, Vite, and Framer Motion.
+- **📊 Análisis Ejecutivo**: Gráficos interactivos de tendencias de ingresos y distribución de servicios (Vistas por Día/Semana).
+- **👷 Control de Nómina**: Cálculos automatizados de pagos basados en comisiones específicas por servicio realizado.
+- **🧼 Servicios Dinámicos**: Gestión completa (CRUD) de tipos de lavado, detallado y tratamientos especiales.
+- **🧾 Tickets Digitales**: Comprobantes profesionales listos para compartir vía WhatsApp con un solo clic.
+- **📄 Sistema de Exportación**: Generación de reportes profesionales en PDF y hojas de datos Excel.
+- **⚡ Rendimiento Superior**: Interfaz de usuario sin latencia construida con React, Vite y Framer Motion.
+- **📱 100% Responsivo**: Diseño adaptable a cualquier pantalla con márgenes fluidos.
 
 ## 🛠️ Tech Stack
 
@@ -19,7 +20,7 @@
 - **Styling**: Vanilla CSS (Modern Minimalist System).
 - **Visualization**: Recharts.
 - **Animations**: Framer Motion.
-- **Backend Ready**: Ready to sync with **Supabase** (PostgreSQL).
+- **Backend Ready**: Listo para sincronizar con **Supabase** (PostgreSQL).
 - **Utilities**: date-fns, jsPDF, XLSX, Lucide React.
 
 ## 🚀 Quick Start / Deployment
