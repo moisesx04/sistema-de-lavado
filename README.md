@@ -53,8 +53,10 @@ Run the SQL schema provided in `src/lib/supabase.ts` via the Supabase SQL Editor
 
 ---
 
-## 👨‍💻 Author
-[Tu Nombre Aquí] - *Portfolio Project*
+## 👨‍💻 Autor
+**Moises Francisco Cuevas**
+- **WhatsApp**: [18094139548](https://wa.me/18094139548)
+- **Portfolio Project**
 
 ---
 
