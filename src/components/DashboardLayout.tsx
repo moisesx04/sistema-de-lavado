@@ -10,8 +10,10 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useApp } from '../hooks/useApp';
 
 export default function DashboardLayout() {
+  const { resetData } = useApp();
   const location = useLocation();
   const path = location.pathname;
 
@@ -47,6 +49,26 @@ export default function DashboardLayout() {
             <span>Nómina</span>
           </Link>
         </nav>
+
+        <div style={{ marginTop: 'auto', padding: '1rem' }}>
+          <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', padding: '1rem', borderRadius: '1rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <div style={{ width: '8px', height: '8px', background: 'var(--primary)', borderRadius: '50%', boxShadow: '0 0 10px var(--primary)' }}></div>
+              <span style={{ fontSize: '0.7rem', fontWeight: '800', opacity: 0.8 }}>MODO DEMO ACTIVA</span>
+            </div>
+            <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', lineHeight: 1.4, margin: 0 }}>
+              Los datos se limpian automáticamente cada 20 min.
+            </p>
+          </div>
+          <button 
+            onClick={() => { if(confirm('¿Deseas resetear todos los datos de la demo?')) resetData(); }} 
+            className="nav-item" 
+            style={{ color: 'var(--accent)', background: 'transparent', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
+          >
+            <Calculator size={20} />
+            <span>Resetear Demo</span>
+          </button>
+        </div>
 
         {/* Logout removed as per user request */}
       </aside>

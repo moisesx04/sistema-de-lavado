@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { Washer, WashRecord, Service } from '../types';
 import { INITIAL_SERVICES } from '../types';
@@ -13,10 +14,13 @@ interface AppContextType {
   deleteService: (id: string) => void;
   addWash: (washerId: string, serviceId: string, customClientPrice?: number, customWasherPay?: number) => WashRecord | null;
   deleteRecord: (id: string) => void;
+  resetData: (keepServices?: boolean) => void;
   getTotalStats: () => { totalRevenue: number; totalPayout: number; totalProfit: number; count: number };
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
+
+const DEMO_RESET_TIME = 20 * 60 * 1000; // 20 minutes
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [washers, setWashers] = useState<Washer[]>(() => {
@@ -33,6 +37,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem('cw_services');
     return saved ? JSON.parse(saved) : INITIAL_SERVICES;
   });
+
+  // Auto-Reset Logic
+  useEffect(() => {
+    const lastResetStr = localStorage.getItem('cw_last_reset');
+    const now = Date.now();
+    
+    if (!lastResetStr) {
+      localStorage.setItem('cw_last_reset', now.toString());
+    } else {
+      const lastReset = parseInt(lastResetStr);
+      if (now - lastReset > DEMO_RESET_TIME) {
+        console.log('Demo Auto-Reset: Clearing records and washers');
+        setRecords([]);
+        setWashers([]);
+        localStorage.setItem('cw_last_reset', now.toString());
+      }
+    }
+  }, []);
 
   useEffect(() => localStorage.setItem('cw_washers', JSON.stringify(washers)), [washers]);
   useEffect(() => localStorage.setItem('cw_records', JSON.stringify(records)), [records]);
@@ -76,6 +98,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const deleteRecord = (id: string) => setRecords(records.filter(r => r.id !== id));
 
+  const resetData = (keepServices = true) => {
+    setRecords([]);
+    setWashers([]);
+    if (!keepServices) setServices(INITIAL_SERVICES);
+    localStorage.setItem('cw_last_reset', Date.now().toString());
+  };
+
   const getTotalStats = () => {
     const totalRevenue = records.reduce((acc, curr) => acc + curr.clientPrice, 0);
     const totalPayout = records.reduce((acc, curr) => acc + curr.washerPay, 0);
@@ -86,7 +115,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
     <AppContext.Provider value={{
       washers, records, services,
-      addWasher, deleteWasher, addService, updateService, deleteService, addWash, deleteRecord, getTotalStats
+      addWasher, deleteWasher, addService, updateService, deleteService, addWash, deleteRecord, resetData, getTotalStats
     }}>
       {children}
     </AppContext.Provider>
