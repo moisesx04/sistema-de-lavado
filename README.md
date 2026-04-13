@@ -40,7 +40,7 @@ npm run dev
 ```
 
 ### 4. Deploy to Vercel
-Connect your GitHub repository to [Vercel](https://vercel.com) for automatic CI/CD. The project is optimized for high-performance edge deployment.
+See the live system here: [sistema-de-lavado.vercel.app](https://sistema-de-lavado.vercel.app)
 
 ### 5. Supabase Integration (Optional)
 The code is pre-configured to use Supabase. Simply add your environment variables to a `.env` file:
