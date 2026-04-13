@@ -1,73 +1,61 @@
-# React + TypeScript + Vite
+# 🏎️ WashFlow Pro: Executive Car Wash Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**WashFlow Pro** is a high-performance, minimalist management system designed for modern car wash businesses. Built with a focus on speed, data visualization, and operational efficiency.
 
-Currently, two official plugins are available:
+![Project Preview](https://via.placeholder.com/1200x600?text=WashFlow+Pro+Dashboard+Preview)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Key Features
 
-## React Compiler
+- **📊 Executive Analytics**: Interactive charts showing revenue trends, profit margins, and service distribution (Day/Week/Month views).
+- **👷 Advanced Payroll**: Automated monthly payroll calculations based on specific commissions per service.
+- **🧼 Dynamic Services**: Full CRUD for wash services, detailing, and special treatments with asymmetric pricing (Client Price vs. Washer Pay).
+- **🧾 WhatsApp Receipts**: Professional "facturita-style" ticket sharing with one-click integration.
+- **📄 Export System**: Generation of professional PDF reports and Excel data sheets.
+- **⚡ Performance First**: Zero-latency UI built with React, Vite, and Framer Motion.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend**: React 18, TypeScript, Vite.
+- **Styling**: Vanilla CSS (Modern Minimalist System).
+- **Visualization**: Recharts.
+- **Animations**: Framer Motion.
+- **Backend Ready**: Ready to sync with **Supabase** (PostgreSQL).
+- **Utilities**: date-fns, jsPDF, XLSX, Lucide React.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Quick Start / Deployment
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 1. Requirements
+- Node.js (v18+)
+- npm / yarn
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Installation
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 3. Usage
+```bash
+npm run dev
 ```
+
+### 4. Deploy to Vercel
+Connect your GitHub repository to [Vercel](https://vercel.com) for automatic CI/CD. The project is optimized for high-performance edge deployment.
+
+### 5. Supabase Integration (Optional)
+The code is pre-configured to use Supabase. Simply add your environment variables to a `.env` file:
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+Run the SQL schema provided in `src/lib/supabase.ts` via the Supabase SQL Editor to initialize your database.
+
+---
+
+## 👨‍💻 Author
+[Tu Nombre Aquí] - *Portfolio Project*
+
+---
+
+## 📄 License
+This project is licensed under the MIT License.
