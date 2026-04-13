@@ -1,7 +1,7 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../hooks/useApp';
-import { Zap, Sparkles, Wind, Layers, Droplets, ArrowRight, Printer, MessageCircle, DollarSign, Wallet } from 'lucide-react';
+import { Zap, Sparkles, Wind, Layers, Droplets, ArrowRight, Printer, MessageCircle, DollarSign, Wallet, X } from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function Tickets() {
@@ -13,6 +13,9 @@ export default function Tickets() {
   
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [lastTicket, setLastTicket] = useState<any>(null);
+
+  const clientTicketRef = useRef<HTMLDivElement>(null);
+  const washerTicketRef = useRef<HTMLDivElement>(null);
 
   // Update default prices when service changes
   useEffect(() => {
@@ -47,7 +50,6 @@ export default function Tickets() {
         serviceName: services.find(s => s.id === selectedService)?.name
       });
       setShowPrintModal(true);
-      // Reset after success
       setSelectedService('');
     }
   };
@@ -63,8 +65,10 @@ export default function Tickets() {
     return <Sparkles size={32} />;
   };
 
-  const sendToWhatsApp = () => {
-    const text = `*🧾 WASHFLOW PRO - RECIBO*
+  const sendWhatsApp = (type: 'client' | 'washer') => {
+    const isClient = type === 'client';
+    const text = isClient 
+      ? `*🧾 WASHFLOW PRO - RECIBO CLIENTE*
 -----------------------------------
 🏷️ *Ticket:* #${lastTicket.id.slice(0, 8).toUpperCase()}
 📅 *Fecha:* ${format(lastTicket.timestamp, 'dd/MM/yyyy HH:mm')}
@@ -72,11 +76,54 @@ export default function Tickets() {
 👷 *Lavador:* ${lastTicket.washerName.toUpperCase()}
 🧼 *Servicio:* ${lastTicket.serviceName.toUpperCase()}
 -----------------------------------
-💰 *TOTAL CLIENTE:* $${lastTicket.clientPrice.toLocaleString()}.00
+💰 *TOTAL A PAGAR:* $${lastTicket.clientPrice.toLocaleString()}.00
 -----------------------------------
-*¡Gracias por su preferencia!*
-_Vuelva pronto_`;
+*¡Gracias por su preferencia!*`
+      : `*🔌 WASHFLOW PRO - VALE LAVADOR*
+-----------------------------------
+🆔 *ID Lavador:* #${lastTicket.washerId.slice(0, 5).toUpperCase()}
+👷 *Lavador:* ${lastTicket.washerName.toUpperCase()}
+🧼 *Servicio:* ${lastTicket.serviceName.toUpperCase()}
+-----------------------------------
+💵 *TU PAGO:* $${lastTicket.washerPay.toLocaleString()}.00
+-----------------------------------
+_Conserva este ticket para tu liquidación diaria_`;
+
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const handlePrint = (type: 'client' | 'washer') => {
+    const content = type === 'client' ? clientTicketRef.current : washerTicketRef.current;
+    if (!content) return;
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Imprimir Ticket</title>
+          <style>
+            body { font-family: monospace; padding: 20px; color: black; }
+            .ticket { width: 300px; margin: 0 auto; border: 1px solid #ccc; padding: 20px; }
+            h3 { text-align: center; margin: 0 0 10px 0; }
+            p { text-align: center; font-size: 12px; margin: 5px 0; }
+            .divider { border-bottom: 2px dashed black; margin: 15px 0; }
+            .row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+            .total { font-size: 20px; font-weight: bold; margin-top: 20px; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="ticket">
+            ${content.innerHTML}
+          </div>
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   return (
@@ -138,35 +185,57 @@ _Vuelva pronto_`;
       </div>
 
       {showPrintModal && lastTicket && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(2, 6, 23, 0.9)', backdropFilter: 'blur(12px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ background: 'white', color: 'black', padding: '2.5rem', borderRadius: '1rem', width: '100%', maxWidth: '350px', fontFamily: 'monospace' }}>
-            <div style={{ textAlign: 'center', borderBottom: '2px dashed black', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: '900', margin: 0 }}>WASHFLOW PRO</h3>
-              <p style={{ fontSize: '0.75rem', margin: '0.5rem 0' }}>Santo Domingo, RD</p>
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(2, 6, 23, 0.95)', backdropFilter: 'blur(15px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '1.5rem', width: '100%', maxWidth: '900px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: '900' }}>COMPROBANTES GENERADOS</h2>
+              <button onClick={() => setShowPrintModal(false)} style={{ background: 'transparent', color: 'var(--text-muted)' }}><X /></button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Ticket:</span> <b>#{lastTicket.id.slice(0, 8).toUpperCase()}</b></div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Fecha:</span> <span>{format(lastTicket.timestamp, 'dd/MM/yyyy HH:mm')}</span></div>
-            </div>
-            <div style={{ borderBottom: '2px dashed black', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}><span>Servicio:</span> <b>{lastTicket.serviceName}</b></div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Lavador:</span> <span>{lastTicket.washerName}</span></div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.50rem', fontWeight: '900' }}>
-              <span>TOTAL:</span>
-              <span>${lastTicket.clientPrice.toLocaleString()}.00</span>
+
+            <div style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', flex: 1, overflowY: 'auto' }}>
+              {/* Client Ticket Section */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ textAlign: 'center', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary)', padding: '0.5rem', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: '800' }}>COPIA PARA CLIENTE</div>
+                <div ref={clientTicketRef} style={{ background: 'white', color: 'black', padding: '2rem', borderRadius: '0.5rem', fontFamily: 'monospace', boxShadow: '0 10px 25px rgba(0,0,0,0.3)' }}>
+                  <h3>WASHFLOW PRO</h3>
+                  <p>Santo Domingo, RD</p>
+                  <div className="divider"></div>
+                  <div className="row"><span>Ticket:</span> <b>#{lastTicket.id.slice(0, 8).toUpperCase()}</b></div>
+                  <div className="row"><span>Fecha:</span> <span>{format(lastTicket.timestamp, 'dd/MM/yyyy HH:mm')}</span></div>
+                  <div className="divider"></div>
+                  <div className="row"><span>Servicio:</span> <b>{lastTicket.serviceName.toUpperCase()}</b></div>
+                  <div className="row"><span>Lavador:</span> <span>{lastTicket.washerName.toUpperCase()}</span></div>
+                  <div className="total">TOTAL: $${lastTicket.clientPrice}.00</div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <button onClick={() => handlePrint('client')} className="btn" style={{ background: '#e2e8f0', color: 'black' }}><Printer size={16} /> Imprimir</button>
+                  <button onClick={() => sendWhatsApp('client')} className="btn" style={{ background: '#25D366', color: 'white' }}><MessageCircle size={16} /> Enviar</button>
+                </div>
+              </div>
+
+              {/* Washer Ticket Section */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ textAlign: 'center', background: 'rgba(244, 63, 94, 0.1)', color: 'var(--accent)', padding: '0.5rem', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: '800' }}>COPIA PARA LAVADOR</div>
+                <div ref={washerTicketRef} style={{ background: 'white', color: 'black', padding: '2rem', borderRadius: '0.5rem', fontFamily: 'monospace', boxShadow: '0 10px 25px rgba(0,0,0,0.3)' }}>
+                  <h3>VALE DE PAGO</h3>
+                  <p>WASHFLOW PRO INTERNAL</p>
+                  <div className="divider"></div>
+                  <div className="row"><span>ID Lavador:</span> <b>#{lastTicket.washerId.slice(0, 5).toUpperCase()}</b></div>
+                  <div className="row"><span>Lavador:</span> <b>{lastTicket.washerName.toUpperCase()}</b></div>
+                  <div className="divider"></div>
+                  <div className="row"><span>Servicio:</span> <span>{lastTicket.serviceName.toUpperCase()}</span></div>
+                  <div className="row"><span>Fecha:</span> <span>{format(lastTicket.timestamp, 'dd/MM HH:mm')}</span></div>
+                  <div className="total">GANANCIA: $${lastTicket.washerPay}.00</div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <button onClick={() => handlePrint('washer')} className="btn" style={{ background: '#e2e8f0', color: 'black' }}><Printer size={16} /> Imprimir</button>
+                  <button onClick={() => sendWhatsApp('washer')} className="btn" style={{ background: '#25D366', color: 'white' }}><MessageCircle size={16} /> Enviar</button>
+                </div>
+              </div>
             </div>
             
-            <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <button onClick={() => window.print()} className="btn" style={{ background: '#e2e8f0', color: 'black', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                <Printer size={18} /> Imprimir Comprobante
-              </button>
-              <button onClick={sendToWhatsApp} className="btn" style={{ background: '#25D366', color: 'white', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                <MessageCircle size={18} /> Compartir WhatsApp
-              </button>
-              <button onClick={() => { setShowPrintModal(false); setLastTicket(null); }} className="btn" style={{ background: 'black', color: 'white', width: '100%', border: 'none' }}>
-                Cerrar
-              </button>
+            <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border)', textAlign: 'right' }}>
+              <button onClick={() => setShowPrintModal(false)} className="btn btn-primary" style={{ padding: '0.75rem 2.5rem' }}>Listo</button>
             </div>
           </div>
         </div>
