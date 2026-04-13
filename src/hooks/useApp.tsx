@@ -11,7 +11,7 @@ interface AppContextType {
   addService: (name: string, clientPrice: number, washerPay: number) => void;
   updateService: (id: string, updated: Partial<Service>) => void;
   deleteService: (id: string) => void;
-  addWash: (washerId: string, serviceId: string) => WashRecord | null;
+  addWash: (washerId: string, serviceId: string, customClientPrice?: number, customWasherPay?: number) => WashRecord | null;
   deleteRecord: (id: string) => void;
   getTotalStats: () => { totalRevenue: number; totalPayout: number; totalProfit: number; count: number };
 }
@@ -59,15 +59,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const deleteService = (id: string) => setServices(services.filter(s => s.id !== id));
 
-  const addWash = (washerId: string, serviceId: string) => {
+  const addWash = (washerId: string, serviceId: string, customClientPrice?: number, customWasherPay?: number) => {
     const service = services.find(s => s.id === serviceId);
     if (!service) return null;
     const newRecord: WashRecord = {
       id: crypto.randomUUID(),
       washerId,
       serviceId,
-      clientPrice: service.clientPrice,
-      washerPay: service.washerPay,
+      clientPrice: customClientPrice ?? service.clientPrice,
+      washerPay: customWasherPay ?? service.washerPay,
       timestamp: Date.now(),
     };
     setRecords([newRecord, ...records]);

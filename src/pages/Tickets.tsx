@@ -1,22 +1,45 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../hooks/useApp';
-import { Zap, Sparkles, Wind, Layers, Droplets, ArrowRight, Printer, MessageCircle } from 'lucide-react';
+import { Zap, Sparkles, Wind, Layers, Droplets, ArrowRight, Printer, MessageCircle, DollarSign, Wallet } from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function Tickets() {
   const { washers, services, addWash } = useApp();
   const [selectedWasher, setSelectedWasher] = useState('');
   const [selectedService, setSelectedService] = useState('');
+  const [customPrice, setCustomPrice] = useState<number | ''>('');
+  const [customPay, setCustomPay] = useState<number | ''>('');
+  
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [lastTicket, setLastTicket] = useState<any>(null);
+
+  // Update default prices when service changes
+  useEffect(() => {
+    if (selectedService) {
+      const s = services.find(sv => sv.id === selectedService);
+      if (s) {
+        setCustomPrice(s.clientPrice);
+        setCustomPay(s.washerPay);
+      }
+    } else {
+      setCustomPrice('');
+      setCustomPay('');
+    }
+  }, [selectedService, services]);
 
   const handleAddWash = () => {
     if (!selectedWasher || !selectedService) {
       alert('Por favor selecciona un lavador y un servicio');
       return;
     }
-    const record = addWash(selectedWasher, selectedService);
+    const record = addWash(
+      selectedWasher, 
+      selectedService, 
+      customPrice === '' ? undefined : Number(customPrice),
+      customPay === '' ? undefined : Number(customPay)
+    );
+
     if (record) {
       setLastTicket({
         ...record,
@@ -24,6 +47,8 @@ export default function Tickets() {
         serviceName: services.find(s => s.id === selectedService)?.name
       });
       setShowPrintModal(true);
+      // Reset after success
+      setSelectedService('');
     }
   };
 
@@ -47,7 +72,7 @@ export default function Tickets() {
 👷 *Lavador:* ${lastTicket.washerName.toUpperCase()}
 🧼 *Servicio:* ${lastTicket.serviceName.toUpperCase()}
 -----------------------------------
-💰 *TOTAL CLIENTE:* $${lastTicket.clientPrice}.00
+💰 *TOTAL CLIENTE:* $${lastTicket.clientPrice.toLocaleString()}.00
 -----------------------------------
 *¡Gracias por su preferencia!*
 _Vuelva pronto_`;
@@ -56,20 +81,41 @@ _Vuelva pronto_`;
 
   return (
     <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
-      <div className="card" style={{ height: 'fit-content' }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '1.5rem' }}>NUEVA VENTA</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <div>
-            <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: '800' }}>SELECCIONAR LAVADOR</label>
-            <select className="select" value={selectedWasher} onChange={(e) => setSelectedWasher(e.target.value)}>
-              <option value="">-- Elige un lavador --</option>
-              {washers.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
-            </select>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div className="card">
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '1.5rem' }}>NUEVA VENTA</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div>
+              <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: '800' }}>SELECCIONAR LAVADOR</label>
+              <select className="select" value={selectedWasher} onChange={(e) => setSelectedWasher(e.target.value)}>
+                <option value="">-- Elige un lavador --</option>
+                {washers.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
+              </select>
+            </div>
+
+            {selectedService && (
+              <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', padding: '1rem', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '1rem', border: '1px solid rgba(59, 130, 246, 0.1)' }}>
+                <div>
+                  <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.65rem', fontWeight: '800' }}>PRECIO CLIENTE ($)</label>
+                  <div style={{ position: 'relative' }}>
+                    <DollarSign size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
+                    <input type="number" className="input" style={{ paddingLeft: '2.25rem', height: '40px', fontSize: '0.9rem' }} value={customPrice} onChange={e => setCustomPrice(e.target.value === '' ? '' : Number(e.target.value))} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.65rem', fontWeight: '800' }}>PAGO LAVADOR ($)</label>
+                  <div style={{ position: 'relative' }}>
+                    <Wallet size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
+                    <input type="number" className="input" style={{ paddingLeft: '2.25rem', height: '40px', fontSize: '0.9rem' }} value={customPay} onChange={e => setCustomPay(e.target.value === '' ? '' : Number(e.target.value))} />
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            <button onClick={handleAddWash} className="btn btn-primary" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
+              REGISTRAR TICKET <ArrowRight size={20} />
+            </button>
           </div>
-          
-          <button onClick={handleAddWash} className="btn btn-primary" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
-            REGISTRAR TICKET <ArrowRight size={20} />
-          </button>
         </div>
       </div>
 
@@ -106,9 +152,9 @@ _Vuelva pronto_`;
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}><span>Servicio:</span> <b>{lastTicket.serviceName}</b></div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Lavador:</span> <span>{lastTicket.washerName}</span></div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.5rem', fontWeight: '900' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.50rem', fontWeight: '900' }}>
               <span>TOTAL:</span>
-              <span>${lastTicket.clientPrice}.00</span>
+              <span>${lastTicket.clientPrice.toLocaleString()}.00</span>
             </div>
             
             <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
