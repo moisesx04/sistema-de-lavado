@@ -23,8 +23,8 @@ export default function DashboardLayout() {
     <div className="app-container">
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <h1>SISTEMA DE <span className="gradient-text">TICKETS</span></h1>
-          <p>GESTIÓN DE LAVADO</p>
+          <h1>WASHFLOW <span className="gradient-text">PRO</span></h1>
+          <p>Gestión de Lavado</p>
         </div>
         
         <nav className="nav-links">
@@ -51,19 +51,19 @@ export default function DashboardLayout() {
         </nav>
 
         <div style={{ marginTop: 'auto', padding: '1rem' }}>
-          <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', padding: '1rem', borderRadius: '1rem', marginBottom: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <div style={{ width: '8px', height: '8px', background: 'var(--primary)', borderRadius: '50%', boxShadow: '0 0 10px var(--primary)' }}></div>
-              <span style={{ fontSize: '0.7rem', fontWeight: '800', opacity: 0.8 }}>MODO DEMO ACTIVA</span>
+          <div style={{ background: 'rgba(37, 99, 235, 0.05)', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '1.25rem', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.65rem' }}>
+              <div style={{ width: '10px', height: '10px', background: 'var(--primary)', borderRadius: '50%', boxShadow: '0 0 12px var(--primary)' }}></div>
+              <span style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.05em', color: 'var(--primary)' }}>MODO DEMO ACTIVA</span>
             </div>
-            <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', lineHeight: 1.4, margin: 0 }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
               Los datos se limpian automáticamente cada 20 min.
             </p>
           </div>
           <button 
             onClick={() => { if(confirm('¿Deseas resetear todos los datos de la demo?')) resetData(); }} 
             className="nav-item" 
-            style={{ color: 'var(--accent)', background: 'transparent', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
+            style={{ color: 'var(--accent)', background: 'transparent' }}
           >
             <Calculator size={20} />
             <span>Resetear Demo</span>
@@ -76,8 +76,8 @@ export default function DashboardLayout() {
       <main className="main-content">
         <header className="header-content">
           <div>
-            <h2 style={{ textTransform: 'uppercase', letterSpacing: '-1.5px', fontSize: '2rem' }}>Panel de Control</h2>
-            <p>Monitoreo inteligente de operaciones</p>
+            <h2>Panel de Control</h2>
+            <p style={{ color: 'var(--text-muted)', fontWeight: 500 }}>Monitoreo inteligente de operaciones</p>
           </div>
           <div className="date-badge">
             <Calendar size={16} color="var(--primary)" />
